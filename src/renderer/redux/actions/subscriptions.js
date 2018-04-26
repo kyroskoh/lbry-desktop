@@ -12,6 +12,7 @@ import { Lbry, buildURI } from 'lbry-redux';
 import { doPurchaseUri } from 'redux/actions/content';
 import { doNavigate } from 'redux/actions/navigation';
 import analytics from 'analytics';
+import Lbryio from 'lbryio';
 
 const CHECK_SUBSCRIPTIONS_INTERVAL = 60 * 60 * 1000;
 const SUBSCRIPTION_DOWNLOAD_LIMIT = 1;
@@ -22,7 +23,21 @@ export const doChannelSubscribe = (subscription: Subscription) => (dispatch: Dis
     data: subscription,
   });
 
-  analytics.apiLogSubscribe(subscription);
+  // const subscription = `${subscription.}`
+  const index = subscription.uri.indexOf('#');
+  const claimId = subscription.uri.slice(index);
+  // debugger;
+  // debugger;
+  Lbryio.call('subscription', 'new', {
+    channel_name: subscription.channelName,
+    claim_id: claimId,
+  })
+    .then(res => {
+      debugger;
+    })
+    .catch(err => {
+      debugger;
+    });
 
   dispatch(doCheckSubscription(subscription, true));
 };
@@ -33,7 +48,9 @@ export const doChannelUnsubscribe = (subscription: Subscription) => (dispatch: D
     data: subscription,
   });
 
-  analytics.apiLogUnsubscribe(subscription);
+  Lbryio.call('subscription', 'delete', {
+    subscription,
+  }).catch(() => {});
 };
 
 export const doCheckSubscriptions = () => (
