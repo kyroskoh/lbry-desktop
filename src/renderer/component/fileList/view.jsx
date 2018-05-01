@@ -151,25 +151,29 @@ class FileList extends React.PureComponent<Props, State> {
         name: claimName,
         claim_name: claimNameDownloaded,
         claim_id: claimId,
+        uri,
       } = fileInfo;
-      const uriParams = {};
+      let claimUri = uri;
+      if (!claimUri) {
+        const uriParams = {};
 
-      // This is unfortunate
-      // https://github.com/lbryio/lbry/issues/1159
-      const name = claimName || claimNameDownloaded;
+        // This is unfortunate
+        // https://github.com/lbryio/lbry/issues/1159
+        const name = claimName || claimNameDownloaded;
 
-      if (channelName) {
-        uriParams.channelName = channelName;
-        uriParams.contentName = name;
-        uriParams.claimId = this.getChannelSignature(fileInfo);
-      } else {
-        uriParams.claimId = claimId;
-        uriParams.claimName = name;
+        if (channelName) {
+          uriParams.channelName = channelName;
+          uriParams.contentName = name;
+          uriParams.claimId = this.getChannelSignature(fileInfo);
+        } else {
+          uriParams.claimId = claimId;
+          uriParams.claimName = name;
+        }
+
+        claimUri = buildURI(uriParams);
       }
 
-      const uri = buildURI(uriParams);
-
-      content.push(<FileCard key={uri} uri={uri} checkPending={checkPending} />);
+      content.push(<FileCard key={claimUri} uri={claimUri} checkPending={checkPending} />);
     });
 
     return (

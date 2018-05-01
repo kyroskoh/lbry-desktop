@@ -99,15 +99,15 @@ const store = createStore(
 
 const compressor = createCompressor();
 const saveClaimsFilter = createFilter('claims', ['byId', 'claimsByUri']);
-const subscriptionsFilter = createFilter('subscriptions', ['subscriptions']);
+
 // We only need to persist the receiveAddress for the wallet
 const walletFilter = createFilter('wallet', ['receiveAddress']);
 
 const persistOptions = {
-  whitelist: ['claims', 'subscriptions', 'publish', 'wallet'],
+  whitelist: ['claims', 'publish', 'wallet'],
   // Order is important. Needs to be compressed last or other transforms can't
   // read the data
-  transforms: [saveClaimsFilter, subscriptionsFilter, walletFilter, compressor],
+  transforms: [saveClaimsFilter, walletFilter, compressor],
   debounce: 10000,
   storage: localForage,
 };

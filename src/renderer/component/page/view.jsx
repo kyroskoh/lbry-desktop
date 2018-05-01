@@ -8,10 +8,11 @@ type Props = {
   noPadding: ?boolean,
   extraPadding: ?boolean,
   notContained: ?boolean, // No max-width, but keep the padding
+  loading: ?boolean,
 };
 
 const Page = (props: Props) => {
-  const { pageTitle, children, noPadding, extraPadding, notContained } = props;
+  const { pageTitle, children, noPadding, extraPadding, notContained, loading } = props;
   return (
     <main
       className={classnames('main', {
@@ -25,7 +26,7 @@ const Page = (props: Props) => {
           {pageTitle && <h1 className="page__title">{pageTitle}</h1>}
         </div>
       )}
-      {children}
+      {!loading && children}
     </main>
   );
 };

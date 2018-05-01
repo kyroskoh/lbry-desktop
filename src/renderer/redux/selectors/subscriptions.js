@@ -4,6 +4,8 @@ import { selectAllClaimsByChannel, selectClaimsById } from 'lbry-redux';
 // get the entire subscriptions state
 const selectState = state => state.subscriptions || {};
 
+export const selectFetchingSubscriptions = createSelector(selectState, state => state.loading);
+
 export const selectNotifications = createSelector(selectState, state => state.notifications);
 
 // list of saved channel names and uris

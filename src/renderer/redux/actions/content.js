@@ -340,6 +340,7 @@ export function doPurchaseUri(uri, specificCostInfo) {
 }
 
 export function doFetchClaimsByChannel(uri, page) {
+  console.log('fetching');
   return (dispatch, getState) => {
     dispatch({
       type: ACTIONS.FETCH_CHANNEL_CLAIMS_STARTED,

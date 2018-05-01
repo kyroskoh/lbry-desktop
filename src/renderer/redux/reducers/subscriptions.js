@@ -90,6 +90,8 @@ const defaultState = {
   subscriptions: [],
   hasFetchedSubscriptions: false,
   notifications: {},
+  loading: true,
+  error: undefined,
 };
 
 export default handleActions(
@@ -122,38 +124,59 @@ export default handleActions(
         subscriptions: newSubscriptions,
       };
     },
-    [ACTIONS.HAS_FETCHED_SUBSCRIPTIONS]: (state: SubscriptionState): SubscriptionState => ({
+    // [ACTIONS.HAS_FETCHED_SUBSCRIPTIONS]: (state: SubscriptionState): SubscriptionState => ({
+    //   ...state,
+    //   hasFetchedSubscriptions: true,
+    // }),
+    // [ACTIONS.SET_SUBSCRIPTION_LATEST]: (
+    //   state: SubscriptionState,
+    //   action: setSubscriptionLatest
+    // ): SubscriptionState => ({
+    //   ...state,
+    //   subscriptions: state.subscriptions.map(
+    //     subscription =>
+    //       subscription.channelName === action.data.subscription.channelName
+    //         ? { ...subscription, latest: action.data.uri }
+    //         : subscription
+    //   ),
+    // }),
+    // [ACTIONS.SET_SUBSCRIPTION_NOTIFICATION]: (
+    //   state: SubscriptionState,
+    //   action: setSubscriptionNotification
+    // ): SubscriptionState => ({
+    //   ...state,
+    //   notifications: {
+    //     ...state.notifications,
+    //     [action.data.uri]: { subscription: action.data.subscription, type: action.data.type },
+    //   },
+    // }),
+    // [ACTIONS.SET_SUBSCRIPTION_NOTIFICATIONS]: (
+    //   state: SubscriptionState,
+    //   action: setSubscriptionNotifications
+    // ): SubscriptionState => ({
+    //   ...state,
+    //   notifications: action.data.notifications,
+    // }),
+    [ACTIONS.FETCH_MY_SUBSCRIPTIONS_START]: (state: SubscriptionState): SubscriptionState => ({
       ...state,
-      hasFetchedSubscriptions: true,
+      loading: true,
+      error: undefined,
     }),
-    [ACTIONS.SET_SUBSCRIPTION_LATEST]: (
+    [ACTIONS.FETCH_MY_SUBSCRIPTIONS_FAIL]: (
       state: SubscriptionState,
-      action: setSubscriptionLatest
+      action
     ): SubscriptionState => ({
       ...state,
-      subscriptions: state.subscriptions.map(
-        subscription =>
-          subscription.channelName === action.data.subscription.channelName
-            ? { ...subscription, latest: action.data.uri }
-            : subscription
-      ),
+      loading: true,
+      error: true,
     }),
-    [ACTIONS.SET_SUBSCRIPTION_NOTIFICATION]: (
+    [ACTIONS.FETCH_MY_SUBSCRIPTIONS_SUCCESS]: (
       state: SubscriptionState,
-      action: setSubscriptionNotification
+      action
     ): SubscriptionState => ({
       ...state,
-      notifications: {
-        ...state.notifications,
-        [action.data.uri]: { subscription: action.data.subscription, type: action.data.type },
-      },
-    }),
-    [ACTIONS.SET_SUBSCRIPTION_NOTIFICATIONS]: (
-      state: SubscriptionState,
-      action: setSubscriptionNotifications
-    ): SubscriptionState => ({
-      ...state,
-      notifications: action.data.notifications,
+      loading: false,
+      subscriptions: action.data,
     }),
   },
   defaultState
