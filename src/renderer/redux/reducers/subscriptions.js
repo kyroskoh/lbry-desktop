@@ -90,7 +90,7 @@ const defaultState = {
   subscriptions: [],
   hasFetchedSubscriptions: false,
   notifications: {},
-  loading: true,
+  loading: false,
   error: undefined,
 };
 
@@ -102,8 +102,20 @@ export default handleActions(
     ): SubscriptionState => {
       const newSubscription: Subscription = action.data;
       const newSubscriptions: Array<Subscription> = state.subscriptions.slice();
-      newSubscriptions.unshift(newSubscription);
 
+      // let isAlreadySubscribed;
+      // for (var i = 0; i < newSubscriptions.length; i += 1) {
+      //   const sub = newSubscriptions[i];
+      //   if (sub.uri === newSubscription.uri) {
+      //     isAlreadySubscribed = true;
+      //     break;
+      //   }
+      // }
+      //
+      // if (!isAlreadySubscribed) {
+      // }
+
+      newSubscriptions.unshift(newSubscription);
       return {
         ...state,
         subscriptions: newSubscriptions,
@@ -128,35 +140,35 @@ export default handleActions(
     //   ...state,
     //   hasFetchedSubscriptions: true,
     // }),
-    // [ACTIONS.SET_SUBSCRIPTION_LATEST]: (
-    //   state: SubscriptionState,
-    //   action: setSubscriptionLatest
-    // ): SubscriptionState => ({
-    //   ...state,
-    //   subscriptions: state.subscriptions.map(
-    //     subscription =>
-    //       subscription.channelName === action.data.subscription.channelName
-    //         ? { ...subscription, latest: action.data.uri }
-    //         : subscription
-    //   ),
-    // }),
-    // [ACTIONS.SET_SUBSCRIPTION_NOTIFICATION]: (
-    //   state: SubscriptionState,
-    //   action: setSubscriptionNotification
-    // ): SubscriptionState => ({
-    //   ...state,
-    //   notifications: {
-    //     ...state.notifications,
-    //     [action.data.uri]: { subscription: action.data.subscription, type: action.data.type },
-    //   },
-    // }),
-    // [ACTIONS.SET_SUBSCRIPTION_NOTIFICATIONS]: (
-    //   state: SubscriptionState,
-    //   action: setSubscriptionNotifications
-    // ): SubscriptionState => ({
-    //   ...state,
-    //   notifications: action.data.notifications,
-    // }),
+    [ACTIONS.SET_SUBSCRIPTION_LATEST]: (
+      state: SubscriptionState,
+      action: setSubscriptionLatest
+    ): SubscriptionState => ({
+      ...state,
+      subscriptions: state.subscriptions.map(
+        subscription =>
+          subscription.channelName === action.data.subscription.channelName
+            ? { ...subscription, latest: action.data.uri }
+            : subscription
+      ),
+    }),
+    [ACTIONS.SET_SUBSCRIPTION_NOTIFICATION]: (
+      state: SubscriptionState,
+      action: setSubscriptionNotification
+    ): SubscriptionState => ({
+      ...state,
+      notifications: {
+        ...state.notifications,
+        [action.data.uri]: { subscription: action.data.subscription, type: action.data.type },
+      },
+    }),
+    [ACTIONS.SET_SUBSCRIPTION_NOTIFICATIONS]: (
+      state: SubscriptionState,
+      action: setSubscriptionNotifications
+    ): SubscriptionState => ({
+      ...state,
+      notifications: action.data.notifications,
+    }),
     [ACTIONS.FETCH_MY_SUBSCRIPTIONS_START]: (state: SubscriptionState): SubscriptionState => ({
       ...state,
       loading: true,

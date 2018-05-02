@@ -27,24 +27,19 @@ export default class extends React.PureComponent<Props> {
   // we need to wait until persist/REHYDRATE has fired before rendering the page
   componentDidMount() {
     const {
-      savedSubscriptions,
-      setHasFetchedSubscriptions,
       notifications,
       setSubscriptionNotifications,
       doFetchMySubscriptions,
     } = this.props;
     doFetchMySubscriptions();
-    // if (savedSubscriptions.length) {
-    //   this.fetchSubscriptions(savedSubscriptions);
-    //   setHasFetchedSubscriptions();
-    // }
-    // const newNotifications = {};
-    // Object.keys(notifications).forEach(cur => {
-    //   if (notifications[cur].type === NOTIFICATION_TYPES.DOWNLOADING) {
-    //     newNotifications[cur] = { ...notifications[cur] };
-    //   }
-    // });
-    // setSubscriptionNotifications(newNotifications);
+
+    const newNotifications = {};
+    Object.keys(notifications).forEach(cur => {
+      if (notifications[cur].type === NOTIFICATION_TYPES.DOWNLOADING) {
+        newNotifications[cur] = { ...notifications[cur] };
+      }
+    });
+    setSubscriptionNotifications(newNotifications);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -52,9 +47,8 @@ export default class extends React.PureComponent<Props> {
     //
     const { subscriptions, doFetchClaimsByChannel } = this.props;
     const { subscriptions: nextSubcriptions } = nextProps;
-    //TODO: keep track of current page to allow infinite scrolling
+
     if (nextSubcriptions.length && nextSubcriptions.length !== subscriptions.length) {
-      debugger;
       nextSubcriptions.forEach(sub => doFetchClaimsByChannel(sub.uri, 1));
     }
   }
@@ -70,7 +64,7 @@ export default class extends React.PureComponent<Props> {
     // const fetchingSubscriptions =
     //   !!savedSubscriptions.length &&
     //   (subscriptions.length !== savedSubscriptions.length || someClaimsNotLoaded);
-    console.log('props', this.props);
+    // console.log('props', this.props);
     let claimList = [];
     subscriptionClaims.forEach(claimData => {
       // debugger;
@@ -79,10 +73,10 @@ export default class extends React.PureComponent<Props> {
 
     claimList = claimList.map(claim => ({ uri: `lbry://${claim}` }));
 
-    console.log('claimList', claimList);
+    // console.log('claimList', claimList);
 
     return (
-      <Page loading={fetchingSubscriptions}>
+      <Page notContained loading={fetchingSubscriptions}>
         {!subscriptions.length && (
           <div className="page__empty">
             {__("It looks like you aren't subscribed to any channels yet.")}
@@ -91,7 +85,7 @@ export default class extends React.PureComponent<Props> {
             </div>
           </div>
         )}
-        {!!claimList.length && <FileList sortByHeight fileInfos={claimList} />
+        {!!claimList.length && <FileList hideFilter sortByHeight fileInfos={claimList} />
         //   !!subscriptions.length && (
         //   <div>
         //     {!!subscriptions.length &&

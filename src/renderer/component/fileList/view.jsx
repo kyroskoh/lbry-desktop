@@ -53,7 +53,6 @@ class FileList extends React.PureComponent<Props, State> {
               if (fileInfo1.pending) {
                 return -1;
               }
-
               const height1 = this.props.claimsById[fileInfo1.claim_id]
                 ? this.props.claimsById[fileInfo1.claim_id].height
                 : 0;
