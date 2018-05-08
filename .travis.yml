@@ -10,7 +10,7 @@ matrix:
     - os: linux
       services: docker
       language: node_js
-      node_js: "8"
+      node_js: "9"
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 cache:
@@ -25,7 +25,8 @@ before_install:
       export PATH="/tmp/git-lfs:$PATH"
     else
       sudo apt-get -qq update 
-      sudo apt-get install -y libsecret-1-dev 
+      sudo apt-get install -y libsecret-1-dev
+      sudo npm upgrade --global yarn
     fi
 before_script:
   - git lfs pull
