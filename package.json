@@ -50,7 +50,7 @@
     "find-process": "^1.1.0",
     "formik": "^0.10.4",
     "keytar": "^4.2.1",
-    "lbry-redux": "lbryio/lbry-redux",
+    "lbry-redux": "lbryio/lbry-redux#modules-upgrade",
     "localforage": "^1.7.1",
     "mixpanel-browser": "^2.22.0",
     "moment": "^2.22.0",
