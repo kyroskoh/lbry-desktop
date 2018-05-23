@@ -31,7 +31,7 @@ class ModalAutoUpdateConfirm extends React.PureComponent {
             {__('Want to know what has changed?')} See the{' '}
             <Button
               label={__('release notes')}
-              href="https://github.com/lbryio/lbry-app/releases"
+              href="https://github.com/lbryio/lbry-desktop/releases"
             />.
           </p>
         </section>
