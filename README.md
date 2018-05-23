@@ -1,9 +1,9 @@
 # LBRY App
 
-[![Build Status](https://travis-ci.org/lbryio/lbry-app.svg?branch=master)](https://travis-ci.org/lbryio/lbry-app)
-[![Dependencies](https://david-dm.org/lbryio/lbry-app/status.svg)](https://david-dm.org/lbryio/lbry-app)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78b627d4f5524792adc48719835e1523)](https://www.codacy.com/app/LBRY/lbry-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lbryio/lbry-app&amp;utm_campaign=Badge_Grade)
-[![chat on Discord](https://img.shields.io/discord/362322208485277697.svg?logo=discord)](https://discord.gg/U5aRyN6)
+[![Build Status](https://travis-ci.org/lbryio/lbry-desktop.svg?branch=master)](https://travis-ci.org/lbryio/lbry-desktop)
+[![Dependencies](https://david-dm.org/lbryio/lbry-desktop/status.svg)](https://david-dm.org/lbryio/lbry-desktop)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78b627d4f5524792adc48719835e1523)](https://www.codacy.com/app/LBRY/lbry-desktop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lbryio/lbry-desktop&amp;utm_campaign=Badge_Grade)
+[![chat on Discord](https://img.shields.io/discord/362322208485277697.svg?logo=discord)](https://chat.lbry.io)
 
 The LBRY app is a graphical browser for the decentralized content marketplace provided by the
 [LBRY](https://lbry.io) protocol. It is essentially the
@@ -21,7 +21,7 @@ We provide installers for Windows, macOS (v10.9 or greater), and Debian-based Li
 | Latest Stable Release | [Download](https://lbry.io/get/lbry.exe)     | [Download](https://lbry.io/get/lbry.dmg)     | [Download](https://lbry.io/get/lbry.deb)     |
 | Latest Pre-release     | [Download](https://lbry.io/get/lbry.pre.exe) | [Download](https://lbry.io/get/lbry.pre.dmg) | [Download](https://lbry.io/get/lbry.pre.deb) |
 
-Our [releases page](https://github.com/lbryio/lbry-app/releases) also contains the latest
+Our [releases page](https://github.com/lbryio/lbry-desktop/releases) also contains the latest
 release, pre-releases, and past builds.
 
 To install from source or make changes to the application, continue reading below.
@@ -40,8 +40,8 @@ Double click the installed application to browse with the LBRY network.
 
 #### Steps
 
-1. Clone this repository: `git clone https://github.com/lbryio/lbry-app`
-2. Change directories into the downloaded folder: `cd lbry-app`
+1. Clone this repository: `git clone https://github.com/lbryio/lbry-desktop`
+2. Change directories into the downloaded folder: `cd lbry-desktop`
 3. Install the dependencies: `yarn`
 4. Run the app: `yarn dev`
 
