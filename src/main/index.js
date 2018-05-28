@@ -58,16 +58,16 @@ app.on('ready', async () => {
   if (!isDaemonRunning) {
     daemon = new Daemon();
     daemon.on('exit', () => {
-      daemon = null;
-      if (!appState.isQuitting) {
-        dialog.showErrorBox(
-          'Daemon has Exited',
-          'The daemon may have encountered an unexpected error, or another daemon instance is already running. \n\n' +
-            'For more information please visit: \n' +
-            'https://lbry.io/faq/startup-troubleshooting'
-        );
-      }
-      app.quit();
+      // daemon = null;
+      // if (!appState.isQuitting) {
+      //  dialog.showErrorBox(
+      //    'Daemon has Exited',
+      //    'The daemon may have encountered an unexpected error, or another daemon instance is already running. \n\n' +
+      //      'For more information please visit: \n' +
+      //      'https://lbry.io/faq/startup-troubleshooting'
+      //  );
+      // }
+      // app.quit();
     });
     daemon.launch();
   }

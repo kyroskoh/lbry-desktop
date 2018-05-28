@@ -253,12 +253,12 @@ export function doCheckUpgradeSubscribe() {
 export function doCheckDaemonVersion() {
   return dispatch => {
     Lbry.version().then(({ lbrynet_version: lbrynetVersion }) => {
-      if (config.lbrynetDaemonVersion === lbrynetVersion) {
-        dispatch({
-          type: ACTIONS.DAEMON_VERSION_MATCH,
-        });
-        return;
-      }
+      // if (config.lbrynetDaemonVersion === lbrynetVersion) {
+      dispatch({
+        type: ACTIONS.DAEMON_VERSION_MATCH,
+      });
+      return;
+      // }
 
       dispatch({
         type: ACTIONS.DAEMON_VERSION_MISMATCH,
