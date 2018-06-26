@@ -14,11 +14,11 @@
     "type": "git",
     "url": "https://github.com/lbryio/lbry-app"
   },
+  "main": "src/main/index.js",
   "author": {
     "name": "LBRY Inc.",
     "email": "hello@lbry.io"
   },
-  "main": "src/main/index.js",
   "scripts": {
     "extract-langs": "node build/extractLocals.js",
     "compile": "electron-webpack && yarn extract-langs",
