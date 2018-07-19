@@ -11,7 +11,7 @@ const downloadDaemon = targetPlatform =>
   new Promise((resolve, reject) => {
     const daemonURLTemplate = packageJSON.lbrySettings.lbrynetDaemonUrlTemplate;
     const daemonVersion = packageJSON.lbrySettings.lbrynetDaemonVersion;
-    const daemonDir = path.join(__dirname,'../',packageJSON.lbrySettings.lbrynetDaemonDir);
+    const daemonDir = path.join(__dirname,'..',packageJSON.lbrySettings.lbrynetDaemonDir);
     var daemonFileName = packageJSON.lbrySettings.lbrynetDaemonFileName;
 
     let currentPlatform = os.platform();
@@ -24,7 +24,7 @@ const downloadDaemon = targetPlatform =>
     const daemonFilePath = path.join(daemonDir,daemonFileName);
     const daemonVersionPath = path.join(__dirname, 'daemon.ver');
     const daemonPlatform = targetPlatform || currentPlatform;
-    const tmpZipPath = path.join(__dirname, '../','dist\\daemon.zip');
+    const tmpZipPath = path.join(__dirname, '../','dist','daemon.zip');
     const daemonURL = daemonURLTemplate
       .replace(/DAEMONVER/g, daemonVersion)
       .replace(/OSNAME/g, daemonPlatform);
@@ -68,7 +68,7 @@ const downloadDaemon = targetPlatform =>
           filter: file =>
             path.basename(file.path) === daemonFileName,
         }))
-        .then(() => del(`${tmpZipPath}*`))
+        .then(() => del(`${tmpZipPath }*`))
         .then(() => {
           console.log('\x1b[32msuccess\x1b[0m Daemon downloaded!');
           if (hasDaemonVersion) {
