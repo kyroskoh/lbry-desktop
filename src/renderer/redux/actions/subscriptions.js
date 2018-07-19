@@ -125,7 +125,8 @@ export const setSubscriptionNotification = (
   });
 
 export const doCheckSubscription = (subscription: Subscription, notify?: boolean) => (
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  getState
 ) => {
   dispatch({
     type: ACTIONS.CHECK_SUBSCRIPTION_STARTED,
@@ -150,7 +151,12 @@ export const doCheckSubscription = (subscription: Subscription, notify?: boolean
                   : NOTIFICATION_TYPES.NOTIFY_ONLY
               )
             );
-            if (index < SUBSCRIPTION_DOWNLOAD_LIMIT && !cur.value.stream.metadata.fee) {
+            if (
+              getState().settings.clientSettings.autoDownload &&
+              index < SUBSCRIPTION_DOWNLOAD_LIMIT &&
+              !cur.value.stream.metadata.fee
+            ) {
+              console.log('AUTO DOWNLOAD');
               dispatch(doPurchaseUri(uri, { cost: 0 }));
             }
           }

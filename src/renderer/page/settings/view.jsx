@@ -31,6 +31,7 @@ type Props = {
   themes: Array<string>,
   automaticDarkModeEnabled: boolean,
   autoplay: boolean,
+  autoDownload: boolean,
 };
 
 type State = {
@@ -54,6 +55,7 @@ class SettingsPage extends React.PureComponent<Props, State> {
     (this: any).onAutomaticDarkModeChange = this.onAutomaticDarkModeChange.bind(this);
     (this: any).onAutoplayChange = this.onAutoplayChange.bind(this);
     (this: any).clearCache = this.clearCache.bind(this);
+    (this: any).onAutoDownloadChange = this.onAutoDownloadChange.bind(this);
     // (this: any).onLanguageChange = this.onLanguageChange.bind(this)
   }
 
@@ -99,6 +101,10 @@ class SettingsPage extends React.PureComponent<Props, State> {
     this.props.setClientSetting(settings.AUTOPLAY, event.target.checked);
   }
 
+  onAutoDownloadChange(event: SyntheticInputEvent<*>) {
+    this.props.setClientSetting(settings.AUTO_DOWNLOAD, event.target.checked);
+  }
+
   onInstantPurchaseEnabledChange(enabled: boolean) {
     this.props.setClientSetting(settings.INSTANT_PURCHASE_ENABLED, enabled);
   }
@@ -138,6 +144,7 @@ class SettingsPage extends React.PureComponent<Props, State> {
       themes,
       automaticDarkModeEnabled,
       autoplay,
+      autoDownload,
     } = this.props;
 
     const noDaemonSettings = !daemonSettings || Object.keys(daemonSettings).length === 0;
@@ -255,6 +262,13 @@ class SettingsPage extends React.PureComponent<Props, State> {
                 helper={__(
                   'NSFW content may include nudity, intense sexuality, profanity, or other adult content. By displaying NSFW content, you are affirming you are of legal age to view mature content in your country or jurisdiction.  '
                 )}
+              />
+              <FormField
+                type="checkbox"
+                name="autoDownload"
+                onChange={this.onAutoDownloadChange}
+                checked={autoDownload}
+                postfix={__('Automatically download new subscribed content')}
               />
             </section>
             <section className="card card--section">
