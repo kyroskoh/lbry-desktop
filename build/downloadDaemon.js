@@ -24,7 +24,7 @@ const downloadDaemon = targetPlatform =>
     const daemonFilePath = path.join(daemonDir, daemonFileName);
     const daemonVersionPath = path.join(__dirname, 'daemon.ver');
     const daemonPlatform = targetPlatform || currentPlatform;
-    const tmpZipPath = path.join(__dirname, '../','dist','daemon.zip');
+    const tmpZipPath = path.join(__dirname,'daemon.zip');
     const daemonURL = daemonURLTemplate
       .replace(/DAEMONVER/g, daemonVersion)
       .replace(/OSNAME/g, daemonPlatform);
