@@ -13,7 +13,7 @@ import { doPurchaseUri } from 'redux/actions/content';
 import Promise from 'bluebird';
 import Lbryio from 'lbryio';
 
-const CHECK_SUBSCRIPTIONS_INTERVAL = 60 * 60 * 1000;
+const CHECK_SUBSCRIPTIONS_INTERVAL = 5 * 60 * 1000;
 const SUBSCRIPTION_DOWNLOAD_LIMIT = 1;
 
 export const doFetchMySubscriptions = () => (dispatch: Dispatch, getState: () => any) => {
@@ -124,67 +124,6 @@ export const setSubscriptionNotification = (
     },
   });
 
-export const doCheckSubscription = (subscription: Subscription, notify?: boolean) => (
-  dispatch: Dispatch
-) => {
-  dispatch({
-    type: ACTIONS.CHECK_SUBSCRIPTION_STARTED,
-    data: subscription,
-  });
-
-  Lbry.claim_list_by_channel({ uri: subscription.uri, page: 1 }).then(result => {
-    const claimResult = result[subscription.uri] || {};
-    const { claims_in_channel: claimsInChannel } = claimResult;
-
-    if (claimsInChannel) {
-      if (notify) {
-        claimsInChannel.reduce((prev, cur, index) => {
-          const uri = buildURI({ contentName: cur.name, claimId: cur.claim_id }, false);
-          if (prev === -1 && uri !== subscription.latest) {
-            dispatch(
-              setSubscriptionNotification(
-                subscription,
-                uri,
-                index < SUBSCRIPTION_DOWNLOAD_LIMIT && !cur.value.stream.metadata.fee
-                  ? NOTIFICATION_TYPES.DOWNLOADING
-                  : NOTIFICATION_TYPES.NOTIFY_ONLY
-              )
-            );
-            if (index < SUBSCRIPTION_DOWNLOAD_LIMIT && !cur.value.stream.metadata.fee) {
-              dispatch(doPurchaseUri(uri, { cost: 0 }));
-            }
-          }
-          return uri === subscription.latest || !subscription.latest ? index : prev;
-        }, -1);
-      }
-
-      dispatch(
-        setSubscriptionLatest(
-          {
-            channelName: claimsInChannel[0].channel_name,
-            uri: buildURI(
-              {
-                channelName: claimsInChannel[0].channel_name,
-                claimId: claimsInChannel[0].claim_id,
-              },
-              false
-            ),
-          },
-          buildURI(
-            { contentName: claimsInChannel[0].name, claimId: claimsInChannel[0].claim_id },
-            false
-          )
-        )
-      );
-    }
-
-    dispatch({
-      type: ACTIONS.CHECK_SUBSCRIPTION_COMPLETED,
-      data: subscription,
-    });
-  });
-};
-
 export const setSubscriptionNotifications = (notifications: SubscriptionNotifications) => (
   dispatch: Dispatch
 ) =>
@@ -244,17 +183,84 @@ export const doChannelUnsubscribe = (subscription: Subscription) => (
   }
 };
 
+export const doCheckSubscription = (subscription: Subscription, notify?: boolean) => (
+  dispatch: Dispatch
+) => {
+  // not implemented
+  dispatch({
+    type: ACTIONS.CHECK_SUBSCRIPTION_STARTED,
+    data: subscription,
+  });
+
+  Lbry.claim_list_by_channel({ uri: subscription.uri, page: 1 }).then(result => {
+    const claimResult = result[subscription.uri] || {};
+    const { claims_in_channel: claimsInChannel } = claimResult;
+
+    console.log('check subs success, claimsInChannel:', claimsInChannel);
+
+    if (claimsInChannel) {
+      if (notify) {
+        claimsInChannel.reduce((prev, cur, index) => {
+          const uri = buildURI({ contentName: cur.name, claimId: cur.claim_id }, false);
+          if (prev === -1 && uri !== subscription.latest) {
+            console.log('set sub notif');
+            dispatch(
+              setSubscriptionNotification(
+                subscription,
+                uri,
+                index < SUBSCRIPTION_DOWNLOAD_LIMIT && !cur.value.stream.metadata.fee
+                  ? NOTIFICATION_TYPES.DOWNLOADING
+                  : NOTIFICATION_TYPES.NOTIFY_ONLY
+              )
+            );
+            if (index < SUBSCRIPTION_DOWNLOAD_LIMIT && !cur.value.stream.metadata.fee) {
+              console.log('do purch');
+              dispatch(doPurchaseUri(uri, { cost: 0 }));
+            }
+          }
+          return uri === subscription.latest || !subscription.latest ? index : prev;
+        }, -1);
+      }
+
+      dispatch(
+        setSubscriptionLatest(
+          {
+            channelName: claimsInChannel[0].channel_name,
+            uri: buildURI(
+              {
+                channelName: claimsInChannel[0].channel_name,
+                claimId: claimsInChannel[0].claim_id,
+              },
+              false
+            ),
+          },
+          buildURI(
+            { contentName: claimsInChannel[0].name, claimId: claimsInChannel[0].claim_id },
+            false
+          )
+        )
+      );
+    }
+
+    dispatch({
+      type: ACTIONS.CHECK_SUBSCRIPTION_COMPLETED,
+      data: subscription,
+    });
+  });
+};
+
 export const doCheckSubscriptions = () => (
   dispatch: Dispatch,
   getState: () => SubscriptionState
 ) => {
-  const checkSubscriptionsTimer = setInterval(
-    () =>
-      selectSubscriptions(getState()).map((subscription: Subscription) =>
-        dispatch(doCheckSubscription(subscription, true))
-      ),
-    CHECK_SUBSCRIPTIONS_INTERVAL
-  );
+  function doCheck() {
+    selectSubscriptions(getState()).map((subscription: Subscription) => {
+      dispatch(doCheckSubscription(subscription, true));
+    });
+  }
+  doCheck();
+  const checkSubscriptionsTimer = setInterval(doCheck, 1000 * 60 * 2);
+  // CHECK_SUBSCRIPTIONS_SUBSCRIBE is not implemented
   dispatch({
     type: ACTIONS.CHECK_SUBSCRIPTIONS_SUBSCRIBE,
     data: { checkSubscriptionsTimer },

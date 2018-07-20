@@ -68,7 +68,7 @@ type CheckSubscriptionCompleted = {
 
 type fetchedSubscriptionsSucess = {
   type: ACTIONS.FETCH_SUBSCRIPTIONS_SUCCESS,
-  data: Array<Subscription>,
+  data: Subscription,
 };
 
 export type Action =
@@ -161,6 +161,16 @@ export default handleActions(
       ...state,
       loading: false,
       subscriptions: action.data,
+    }),
+    [ACTIONS.CHECK_SUBSCRIPTION_COMPLETED]: (
+      state: SubscriptionState,
+      action: fetchedSubscriptionsSucess
+    ): SubscriptionState => ({
+      ...state,
+      subscriptions: state.subscriptions.map(
+        subscription =>
+          subscription.channelName === action.data.channelName ? action.data : subscription
+      ),
     }),
   },
   defaultState
