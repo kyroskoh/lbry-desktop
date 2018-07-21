@@ -21,12 +21,11 @@ const downloadDaemon = targetPlatform =>
      daemonFileName = daemonFileName + '.exe';
     }
 
-    const daemonPlatform = process.env.TARGET || targetPlatform || currentPlatform;
+    var daemonPlatform = process.env.TARGET || targetPlatform || currentPlatform;
     if (daemonPlatform === 'mac') daemonPlatform = 'macos';
 
     const daemonFilePath = path.join(daemonDir, daemonFileName);
     const daemonVersionPath = path.join(__dirname, 'daemon.ver');
-    const daemonPlatform = targetPlatform || currentPlatform;
     const tmpZipPath = path.join(__dirname,'daemon.zip');
     const daemonURL = daemonURLTemplate
       .replace(/DAEMONVER/g, daemonVersion)
