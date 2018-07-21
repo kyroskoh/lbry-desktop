@@ -20,8 +20,9 @@ const downloadDaemon = targetPlatform =>
      currentPlatform = 'windows';
      daemonFileName = daemonFileName + '.exe';
     }
-
-    var daemonPlatform = context.platform.toString() || targetPlatform || currentPlatform;
+    console.log(process.env.TARGET);
+    var daemonPlatform = process.env.TARGET || targetPlatform || currentPlatform;
+    console.log(daemonPlatform);
     if (daemonPlatform === 'mac') daemonPlatform = 'macos';
 
     const daemonFilePath = path.join(daemonDir, daemonFileName);
