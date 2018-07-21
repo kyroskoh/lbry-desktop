@@ -21,6 +21,9 @@ const downloadDaemon = targetPlatform =>
      daemonFileName = daemonFileName + '.exe';
     }
 
+    const daemonPlatform = process.env.TARGET || targetPlatform || currentPlatform;
+    if (daemonPlatform === 'mac') daemonPlatform = 'macos';
+
     const daemonFilePath = path.join(daemonDir, daemonFileName);
     const daemonVersionPath = path.join(__dirname, 'daemon.ver');
     const daemonPlatform = targetPlatform || currentPlatform;
