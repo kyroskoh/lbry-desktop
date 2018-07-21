@@ -12,7 +12,7 @@ const downloadDaemon = require('./downloadDaemon');
 module.exports = context => {
 
   let currentPlatform = os.platform();
-  if (currentPlatform === 'darwin') currentPlatform = 'macoss';
+  if (currentPlatform === 'darwin') currentPlatform = 'macos';
   if (currentPlatform === 'win32') currentPlatform = 'windows';
 
   let buildingPlatformTarget = context.platform.toString();
