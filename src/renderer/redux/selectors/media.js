@@ -10,3 +10,10 @@ export const makeSelectMediaPositionForUri = uri =>
     const outpoint = `${claim.txid}:${claim.nout}`;
     return state.positions[outpoint] || null;
   });
+
+// export const makeSelectMediaPositionForUri = uri =>
+//   createSelector(
+//     selectState,
+//     makeSelectClaimForUri(uri),
+//     (state, claim) => state.content[claim.claim_id].position[claim.outpoint] || null;
+//   });

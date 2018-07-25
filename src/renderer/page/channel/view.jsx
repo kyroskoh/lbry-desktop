@@ -67,6 +67,7 @@ class ChannelPage extends React.PureComponent<Props> {
   }
 
   render() {
+    console.log('channel page');
     const { uri, fetching, claimsInChannel, claim, page, totalPages, channelIsMine } = this.props;
     const { name, permanent_url: permanentUrl, claim_id: claimId } = claim;
     const currentPage = parseInt((page || 1) - 1, 10);

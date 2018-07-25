@@ -13,7 +13,7 @@ import { doPurchaseUri } from 'redux/actions/content';
 import Promise from 'bluebird';
 import Lbryio from 'lbryio';
 
-const CHECK_SUBSCRIPTIONS_INTERVAL = 5 * 60 * 1000;
+const CHECK_SUBSCRIPTIONS_INTERVAL = 1 * 20 * 1000;
 const SUBSCRIPTION_DOWNLOAD_LIMIT = 1;
 
 export const doFetchMySubscriptions = () => (dispatch: Dispatch, getState: () => any) => {
@@ -101,7 +101,10 @@ export const doFetchMySubscriptions = () => (dispatch: Dispatch, getState: () =>
 
 export const setSubscriptionLatest = (subscription: Subscription, uri: string) => (
   dispatch: Dispatch
-) =>
+) => {
+  console.log('setSubscriptionLatest');
+  console.log('subscription', subscription);
+  console.log('uri', uri);
   dispatch({
     type: ACTIONS.SET_SUBSCRIPTION_LATEST,
     data: {
@@ -109,7 +112,7 @@ export const setSubscriptionLatest = (subscription: Subscription, uri: string) =
       uri,
     },
   });
-
+};
 export const setSubscriptionNotification = (
   subscription: Subscription,
   uri: string,
@@ -184,7 +187,8 @@ export const doChannelUnsubscribe = (subscription: Subscription) => (
 };
 
 export const doCheckSubscription = (subscription: Subscription, notify?: boolean) => (
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  getState: () => {}
 ) => {
   // not implemented
   dispatch({
@@ -198,9 +202,19 @@ export const doCheckSubscription = (subscription: Subscription, notify?: boolean
 
     console.log('check subs success, claimsInChannel:', claimsInChannel);
 
-    if (claimsInChannel) {
+    const state = getState();
+    const stateSub = state.subscriptions.subscriptions.find(sub => sub.uri === subscription.uri);
+    const latestInClaims = `${claimsInChannel[0].name}#${claimsInChannel[0].claim_id}`;
+    console.log('stateSub.latest', stateSub.latest);
+    console.log('latestInClaims', latestInClaims);
+
+    if (claimsInChannel && stateSub.latest !== latestInClaims) {
+      // notify
+      // download
+      // set latest
+
       if (notify) {
-        claimsInChannel.reduce((prev, cur, index) => {
+        var wut = claimsInChannel.reduce((prev, cur, index) => {
           const uri = buildURI({ contentName: cur.name, claimId: cur.claim_id }, false);
           if (prev === -1 && uri !== subscription.latest) {
             console.log('set sub notif');
@@ -221,6 +235,8 @@ export const doCheckSubscription = (subscription: Subscription, notify?: boolean
           return uri === subscription.latest || !subscription.latest ? index : prev;
         }, -1);
       }
+
+      console.log('um this fucking happened right');
 
       dispatch(
         setSubscriptionLatest(
@@ -249,12 +265,14 @@ export const doCheckSubscription = (subscription: Subscription, notify?: boolean
   });
 };
 
-export const doCheckSubscriptions = () => (
-  dispatch: Dispatch,
-  getState: () => SubscriptionState
-) => {
+export const doCheckSubscriptions = () => (dispatch: Dispatch, getState: () => {}) => {
   function doCheck() {
-    selectSubscriptions(getState()).map((subscription: Subscription) => {
+    console.log('do check subs');
+    const state = getState();
+    const subscriptions = selectSubscriptions(state);
+    console.log('subs:', subscriptions);
+    subscriptions.map((subscription: Subscription) => {
+      console.log('do check sub', subscription);
       dispatch(doCheckSubscription(subscription, true));
     });
   }

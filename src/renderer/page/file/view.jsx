@@ -109,6 +109,8 @@ class FilePage extends React.Component<Props> {
       fileInfo,
     } = this.props;
 
+    console.log('FILE claim:', claim);
+
     // File info
     const { title, thumbnail } = metadata;
     const { height, channel_name: channelName, value } = claim;
