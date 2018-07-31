@@ -48,6 +48,7 @@ type Props = {
   subscriptions: Array<Subscription>,
   setClientSetting: (string, boolean | string) => void,
   autoplay: boolean,
+  setViewed: string => void,
 };
 
 class FilePage extends React.Component<Props> {
@@ -71,7 +72,7 @@ class FilePage extends React.Component<Props> {
   }
 
   componentDidMount() {
-    const { uri, fileInfo, fetchFileInfo, fetchCostInfo } = this.props;
+    const { uri, fileInfo, fetchFileInfo, fetchCostInfo, setViewed } = this.props;
 
     if (fileInfo === undefined) {
       fetchFileInfo(uri);
@@ -81,6 +82,8 @@ class FilePage extends React.Component<Props> {
     fetchCostInfo(uri);
 
     this.checkSubscription(this.props);
+
+    setViewed(uri);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -130,7 +133,7 @@ class FilePage extends React.Component<Props> {
     const { title, thumbnail } = metadata;
     const { height, channel_name: channelName, value } = claim;
     const { PLAYABLE_MEDIA_TYPES, PREVIEW_MEDIA_TYPES } = FilePage;
-    const isRewardContent = rewardedContentClaimIds.includes(claim.claim_id);
+    const isRewardContent = (rewardedContentClaimIds || []).includes(claim.claim_id);
     const shouldObscureThumbnail = obscureNsfw && metadata.nsfw;
     const fileName = fileInfo ? fileInfo.file_name : null;
     const mediaType = getMediaType(contentType, fileName);
