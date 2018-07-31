@@ -34,10 +34,7 @@ type Props = {
   volume: number,
   claim: Claim,
   uri: string,
-  doPlay: () => void,
-  doPause: () => void,
   savePosition: (string, string, number) => void,
-  mediaPaused: boolean,
   playbackPosition: ?number,
   className: ?string,
   obscureNsfw: boolean,
@@ -195,10 +192,7 @@ class FileViewer extends React.PureComponent<Props> {
       volume,
       claim,
       uri,
-      doPlay,
-      doPause,
       savePosition,
-      mediaPaused,
       playbackPosition,
       className,
       obscureNsfw,
@@ -230,6 +224,7 @@ class FileViewer extends React.PureComponent<Props> {
       <div className={classnames('video', {}, className)}>
         {isPlaying && (
           <div className="content__view">
+            <p>hai</p>
             {!isReadyToPlay ? (
               <div className={layoverClass} style={layoverStyle}>
                 <LoadingScreen status={loadStatusMessage} />
@@ -244,14 +239,13 @@ class FileViewer extends React.PureComponent<Props> {
                 downloadCompleted={fileInfo.completed}
                 changeVolume={changeVolume}
                 volume={volume}
-                doPlay={doPlay}
-                doPause={doPause}
                 savePosition={savePosition}
                 claim={claim}
                 uri={uri}
                 paused={mediaPaused}
                 position={mediaPosition}
                 startedPlayingCb={this.startedPlayingCb}
+                playingUri={playingUri}
               />
             )}
           </div>

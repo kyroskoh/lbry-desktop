@@ -17,7 +17,6 @@ import { doFetchRewardedContent } from 'redux/actions/content';
 import { doFetchDaemonSettings } from 'redux/actions/settings';
 import { doAuthNavigate } from 'redux/actions/navigation';
 import { doAuthenticate } from 'redux/actions/user';
-import { doPause } from 'redux/actions/media';
 import { doCheckSubscriptions } from 'redux/actions/subscriptions';
 import {
   selectIsUpgradeSkipped,
@@ -108,9 +107,6 @@ export function doDownloadUpgradeRequested() {
 
   return (dispatch, getState) => {
     const state = getState();
-
-    // Pause video if needed
-    dispatch(doPause());
 
     const autoUpdateDeclined = selectAutoUpdateDeclined(state);
 
