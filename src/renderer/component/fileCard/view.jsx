@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import moment from 'moment';
 import { normalizeURI, convertToShareLink } from 'lbry-redux';
 import type { Claim, Metadata } from 'types/claim';
 import CardMedia from 'component/cardMedia';
@@ -24,6 +25,7 @@ type Props = {
   showPrice: boolean,
   pending?: boolean,
   position: ?number,
+  lastViewed: ?number,
   /* eslint-disable react/no-unused-prop-types */
   resolveUri: string => void,
   isResolvingUri: boolean,
@@ -63,6 +65,7 @@ class FileCard extends React.PureComponent<Props> {
       showPrice,
       pending,
       position,
+      lastViewed,
     } = this.props;
 
     const shouldHide = !claimIsMine && !pending && obscureNsfw && metadata && metadata.nsfw;
@@ -98,15 +101,21 @@ class FileCard extends React.PureComponent<Props> {
           <div className="card__title--small card__title--file-card">
             <TruncatedText lines={2}>{title}</TruncatedText>
           </div>
-          <div className="card__subtitle">
-            {pending ? <div>Pending...</div> : <UriIndicator uri={uri} link />}
-          </div>
-          <div className="card__file-properties">
-            {showPrice && <FilePrice hideFree uri={uri} />}
-            {isRewardContent && <Icon iconColor="red" icon={icons.FEATURED} />}
-            {fileInfo && <Icon icon={icons.LOCAL} />}
-            {position && <Icon icon={icons.REFRESH} />}
-          </div>
+          {lastViewed ? (
+            <div className="card__subtitle">{moment(lastViewed).from(moment())}</div>
+          ) : (
+            <React.Fragment>
+              <div className="card__subtitle">
+                {pending ? <div>Pending...</div> : <UriIndicator uri={uri} link />}
+              </div>
+              <div className="card__file-properties">
+                {showPrice && <FilePrice hideFree uri={uri} />}
+                {isRewardContent && <Icon iconColor="red" icon={icons.FEATURED} />}
+                {fileInfo && <Icon icon={icons.LOCAL} />}
+                {position && <Icon icon={icons.REFRESH} />}
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </section>
     );
