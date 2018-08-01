@@ -6,7 +6,6 @@ import type { Claim, Metadata } from 'types/claim';
 import CardMedia from 'component/cardMedia';
 import TruncatedText from 'component/common/truncated-text';
 import Icon from 'component/common/icon';
-import FilePrice from 'component/filePrice';
 import UriIndicator from 'component/uriIndicator';
 import * as icons from 'constants/icons';
 import classnames from 'classnames';
@@ -22,10 +21,10 @@ type Props = {
   rewardedContentClaimIds: Array<string>,
   obscureNsfw: boolean,
   claimIsMine: boolean,
-  showPrice: boolean,
   pending?: boolean,
   position: ?number,
   lastViewed: ?number,
+  clearHistoryUri: string => void,
   /* eslint-disable react/no-unused-prop-types */
   resolveUri: string => void,
   isResolvingUri: boolean,
@@ -62,10 +61,10 @@ class FileCard extends React.PureComponent<Props> {
       rewardedContentClaimIds,
       obscureNsfw,
       claimIsMine,
-      showPrice,
       pending,
       position,
       lastViewed,
+      clearHistoryUri,
     } = this.props;
 
     const shouldHide = !claimIsMine && !pending && obscureNsfw && metadata && metadata.nsfw;
@@ -102,7 +101,18 @@ class FileCard extends React.PureComponent<Props> {
             <TruncatedText lines={2}>{title}</TruncatedText>
           </div>
           {lastViewed ? (
-            <div className="card__subtitle">{moment(lastViewed).from(moment())}</div>
+            <div className="card__subtitle">
+              {moment(lastViewed).from(moment())}
+              {position && <Icon icon={icons.REFRESH} />}
+              <span
+                onClick={e => {
+                  e.stopPropagation();
+                  clearHistoryUri(uri);
+                }}
+              >
+                <Icon icon={icons.CLOSE} iconColor="red" />
+              </span>
+            </div>
           ) : (
             <React.Fragment>
               <div className="card__subtitle">
