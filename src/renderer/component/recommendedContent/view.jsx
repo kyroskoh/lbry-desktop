@@ -51,7 +51,6 @@ export default class RecommendedContent extends React.PureComponent<Props> {
         <FormRow>
           <ToolTip onComponent body={__('Automatically download and play free content.')}>
             <FormField
-              useToggle
               firstInList
               name="autoplay"
               type="checkbox"
