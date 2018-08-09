@@ -45,16 +45,27 @@ export class SplashScreen extends React.PureComponent<Props, State> {
     const { notifyUnlockWallet } = this.props;
     const { launchedModal } = this.state;
 
-    const startupStatus = status.startup_status;
-    if (startupStatus.code === 'started') {
+    //
+    // if (!status.wallet.is_unlocked) {
+    //   this.setState({
+    //     message: __('Unlock Wallet'),
+    //     details: __('Please unlock your wallet to proceed.'),
+    //     isLagging: false,
+    //     isRunning: true,
+    //   });
+    //
+    //   if (launchedModal === false) {
+    //     this.setState({ launchedModal: true }, () => notifyUnlockWallet());
+    //   }
+    //   return;
+    // }
+
+    if (status.is_running) {
       // Wait until we are able to resolve a name before declaring
       // that we are done.
       // TODO: This is a hack, and the logic should live in the daemon
       // to give us a better sense of when we are actually started
       this.setState({
-        message: __('Testing Network'),
-        details: __('Waiting for name resolution'),
-        isLagging: false,
         isRunning: true,
       });
 
@@ -69,30 +80,22 @@ export class SplashScreen extends React.PureComponent<Props, State> {
       return;
     }
 
-    if (status.blockchain_status && status.blockchain_status.blocks_behind > 0) {
-      const format =
-        status.blockchain_status.blocks_behind == 1 ? '%s block behind' : '%s blocks behind';
+    console.log('status: ', status);
+    if (status.blockchain_headers && status.blockchain_headers.download_progress < 100) {
+      this.setState({
+        message: __('Downloading Headers'),
+        details: `${status.blockchain_headers.download_progress}% ${__('complete')}`,
+      });
+    } else if (status.wallet && status.wallet.blocks_behind > 0) {
+      const format = status.wallet.blocks_behind == 1 ? '%s block behind' : '%s blocks behind';
       this.setState({
         message: __('Blockchain Sync'),
-        details: __(format, status.blockchain_status.blocks_behind),
-        isLagging: startupStatus.is_lagging,
+        details: __(format, status.wallet.blocks_behind),
       });
-    } else if (startupStatus.code === 'waiting_for_wallet_unlock') {
-      this.setState({
-        message: __('Unlock Wallet'),
-        details: __('Please unlock your wallet to proceed.'),
-        isLagging: false,
-        isRunning: true,
-      });
-
-      if (launchedModal === false) {
-        this.setState({ launchedModal: true }, () => notifyUnlockWallet());
-      }
     } else {
       this.setState({
-        message: __('Network Loading'),
-        details: startupStatus.message + (startupStatus.is_lagging ? '' : '...'),
-        isLagging: startupStatus.is_lagging,
+        message: __('Starting Up'),
+        details: '',
       });
     }
     setTimeout(() => {
