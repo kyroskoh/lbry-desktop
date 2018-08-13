@@ -3,16 +3,12 @@ import React from 'react';
 import FileCard from 'component/fileCard';
 import Page from 'component/page';
 import Button from 'component/button';
+import HistoryItem from 'component/historyItem';
 import { FormField, FormRow } from 'component/common/form';
 import ReactPaginate from 'react-paginate';
 
-type HistoryItem = {
-  uri: string,
-  lastViewed: number,
-};
-
 type Props = {
-  history: Array<HistoryItem>,
+  history: Array<{ uri: string, lastViewed: number }>,
   page: number,
   pageCount: number,
   navigate: string => void,
@@ -48,7 +44,7 @@ class UserHistoryPage extends React.PureComponent<Props> {
           {history && history.length ? (
             <React.Fragment>
               {history.map(item => (
-                <FileCard key={item.uri} uri={item.uri} lastViewed={item.lastViewed} />
+                <HistoryItem key={item.uri} uri={item.uri} lastViewed={item.lastViewed} />
               ))}
               {pageCount > 1 && (
                 <FormRow verticallyCentered centered>

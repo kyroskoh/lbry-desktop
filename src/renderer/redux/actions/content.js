@@ -514,6 +514,7 @@ export function doSetContentHistoryItem(uri: string) {
 
 export function doClearContentHistoryUri(uri: string) {
   return dispatch => {
+    console.log('clear:', uri);
     dispatch({
       type: ACTIONS.CLEAR_CONTENT_HISTORY_URI,
       data: { uri },

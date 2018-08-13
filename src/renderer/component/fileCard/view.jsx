@@ -9,6 +9,7 @@ import Icon from 'component/common/icon';
 import UriIndicator from 'component/uriIndicator';
 import * as icons from 'constants/icons';
 import classnames from 'classnames';
+import FilePrice from 'component/filePrice';
 import { openCopyLinkMenu } from '../../util/contextMenu';
 
 // TODO: iron these out
@@ -23,7 +24,6 @@ type Props = {
   claimIsMine: boolean,
   pending?: boolean,
   position: ?number,
-  lastViewed: ?number,
   clearHistoryUri: string => void,
   /* eslint-disable react/no-unused-prop-types */
   resolveUri: string => void,
@@ -63,7 +63,6 @@ class FileCard extends React.PureComponent<Props> {
       claimIsMine,
       pending,
       position,
-      lastViewed,
       clearHistoryUri,
     } = this.props;
 
@@ -100,32 +99,15 @@ class FileCard extends React.PureComponent<Props> {
           <div className="card__title--small card__title--file-card">
             <TruncatedText lines={2}>{title}</TruncatedText>
           </div>
-          {lastViewed ? (
-            <div className="card__subtitle">
-              {moment(lastViewed).from(moment())}
-              {position && <Icon icon={icons.REFRESH} />}
-              <span
-                onClick={e => {
-                  e.stopPropagation();
-                  clearHistoryUri(uri);
-                }}
-              >
-                <Icon icon={icons.CLOSE} iconColor="red" />
-              </span>
-            </div>
-          ) : (
-            <React.Fragment>
-              <div className="card__subtitle">
-                {pending ? <div>Pending...</div> : <UriIndicator uri={uri} link />}
-              </div>
-              <div className="card__file-properties">
-                {showPrice && <FilePrice hideFree uri={uri} />}
-                {isRewardContent && <Icon iconColor="red" icon={icons.FEATURED} />}
-                {fileInfo && <Icon icon={icons.LOCAL} />}
-                {position && <Icon icon={icons.REFRESH} />}
-              </div>
-            </React.Fragment>
-          )}
+          <div className="card__subtitle">
+            {pending ? <div>Pending...</div> : <UriIndicator uri={uri} link />}
+          </div>
+          <div className="card__file-properties">
+            <FilePrice hideFree uri={uri} />
+            {isRewardContent && <Icon iconColor="red" icon={icons.FEATURED} />}
+            {fileInfo && <Icon icon={icons.LOCAL} />}
+            {position && <Icon icon={icons.REFRESH} />}
+          </div>
         </div>
       </section>
     );
