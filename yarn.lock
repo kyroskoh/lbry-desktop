@@ -5651,9 +5651,9 @@ lazy-val@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/lazy-val/-/lazy-val-1.0.3.tgz#bb97b200ef00801d94c317e29dc6ed39e31c5edc"
 
-lbry-redux@lbryio/lbry-redux#83fec2a8419cbf0f1fafdc98a50dab3051191ef5:
+lbry-redux@lbryio/lbry-redux#8794a775bf71e7b8b7d1ac44392196bb58a0042a:
   version "0.0.1"
-  resolved "https://codeload.github.com/lbryio/lbry-redux/tar.gz/83fec2a8419cbf0f1fafdc98a50dab3051191ef5"
+  resolved "https://codeload.github.com/lbryio/lbry-redux/tar.gz/8794a775bf71e7b8b7d1ac44392196bb58a0042a"
   dependencies:
     proxy-polyfill "0.1.6"
     reselect "^3.0.0"
@@ -9348,9 +9348,9 @@ then-request@^2.0.1:
     promise "^7.1.1"
     qs "^6.1.0"
 
-three@^0.93.0:
-  version "0.93.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.93.0.tgz#3fd6c367ef4554abbb6e16ad69936283e895c123"
+three@^0.95.0:
+  version "0.95.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.95.0.tgz#b60ea076ba17df9faba9e855b86ab3f541289abf"
 
 throttleit@0.0.2:
   version "0.0.2"
